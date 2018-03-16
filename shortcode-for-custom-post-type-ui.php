@@ -1,26 +1,26 @@
 
-function display_news_in_page(){
-	$party_id = (int)$_GET['party-id'];
-		$post_info = '';
-		if($party_id > 0) {
-			$post_info .= '<h1>';
-			$post_info .= get_post_field('post_title', $party_id);
-			$post_info .= '</h1><br>';
-			$post_info .= get_post_field('post_date', $party_id);
-			$post_info .= '<br>';
-			$post_info .= get_post_field('post_content', $party_id);
-			return $post_info;
-		} else {
-				$args = array( 'numberposts' => '1', 'post_type' => 'party' );
-				$recent_posts = wp_get_recent_posts( $args );
-				$post_info = '';
-				foreach( $recent_posts as $recent ){
-					$post_info .= '<h1>' . $recent['post_title'] . '</h1><br>';
-					$post_info .= $recent['post_date'] . '<br>';
-					$post_info .= $recent['post_content'];
-				return $post_info;
-				}
-		}
-}
 
-add_shortcode( 'display_news_in_page', 'display_news_in_page' );
+   function display_custom_post_type(){
+        $args = array(
+            'post_type' => 'news',
+            'post_status' => 'publish',
+			'posts_per_page' => 3
+        );
+
+        $string = '';
+        $query = new WP_Query( $args );
+        if( $query->have_posts() ){
+            $string .= '<div>';
+            while( $query->have_posts() ){
+				
+                $query->the_post();
+                $string .= '<h3>' . get_the_title() . '</h3>';
+				$string .= '<p>' .get_the_post_thumbnail().'</p>';
+				$string .= '<p>'.get_the_content().'</p>';
+            }
+            $string .= '</div>';
+        }
+        wp_reset_postdata();
+        return $string;
+    }
+add_shortcode( 'news', 'display_custom_post_type' );
