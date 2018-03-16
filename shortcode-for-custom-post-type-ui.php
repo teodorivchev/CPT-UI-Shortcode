@@ -15,8 +15,8 @@
 				
                 $query->the_post();
                 $string .= '<h3>' . get_the_title() . '</h3>';
-				$string .= '<p>' .get_the_post_thumbnail().'</p>';
-				$string .= '<p>'.get_the_content().'</p>';
+		$string .= '<p>' .get_the_post_thumbnail().'</p>';
+		$string .= '<p>'.get_the_content().'</p>';
             }
             $string .= '</div>';
         }
